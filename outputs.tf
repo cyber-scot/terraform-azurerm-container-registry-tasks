@@ -15,12 +15,12 @@ output "acr_task_names" {
 
 output "acr_task_principal_ids" {
   description = "The Principal IDs associated with the Managed Service Identities of the Azure Container Registry tasks."
-  value       = [for task in azurerm_container_registry_task.acr_task : task.identity.principal_id]
+  value       = [for task in azurerm_container_registry_task.acr_task : task.identity[0].principal_id if length(task.identity) > 0]
 }
 
 output "acr_task_tenant_ids" {
   description = "The Tenant IDs associated with the Managed Service Identities of the Azure Container Registry tasks."
-  value       = [for task in azurerm_container_registry_task.acr_task : task.identity.tenant_id]
+  value       = [for task in azurerm_container_registry_task.acr_task : task.identity[0].tenant_id if length(task.identity) > 0]
 }
 
 output "schedule_run_now_ids" {

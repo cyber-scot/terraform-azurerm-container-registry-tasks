@@ -37,30 +37,27 @@ module "container_registry" {
       admin_enabled         = true
       sku                   = "Basic"
       export_policy_enabled = true
-    },
+    }
   ]
 }
 
-
-module "acr_task_example" {
-  source = "../../"
+module "registry_task" {
+  source = "cyber-scot/container_registry_tasks/azurerm"
 
   registry_tasks = [
     {
-      name   = "build_ubuntu"
-      acr_id = "YOUR_ACR_ID_HERE" # Replace with your Azure Container Registry ID
+      name   = "build_ubuntu_nginx"
+      acr_id = module.container_registry.registry_ids[0] # Replace with your Azure Container Registry ID
       tags   = module.rg.rg_tags
+      platform = {
+        os = "Linux"
+      }
       docker_step = {
         context_access_token = data.azurerm_key_vault_secret.gh_pat.value
-        context_path         = "https://github.com/cyber-scot/terraform-azurerm-container-registry-tasks.git" # Assuming the Dockerfile is in the current directory
+        context_path         = "https://github.com/cyber-scot/terraform-azurerm-container-registry-tasks.git"
         dockerfile_path      = "examples/standard/Dockerfile"
-        scheduled_run_now    = true
-        arguments            = []
-        secret_arguments     = []
-        image_names          = ["${module.container_registry}/ubuntu:latest"]
-        cache_enabled        = true
-        push_enabled         = true
-        target_enabled       = true
+        schedule_run_now     = true
+        image_names          = ["${module.container_registry.registry_login_servers[0]}/ubuntu-nginx:latest"]
       }
       identity_type = "SystemAssigned"
     }

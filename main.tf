@@ -33,12 +33,12 @@ resource "azurerm_container_registry_task" "acr_task" {
       context_access_token = docker_step.value.context_access_token
       context_path         = docker_step.value.context_path
       dockerfile_path      = docker_step.value.dockerfile_path
-      arguments            = docker_step.value.arguements
+      arguments            = docker_step.value.arguments
       secret_arguments     = docker_step.value.secret_arguments
       image_names          = docker_step.value.image_names
       cache_enabled        = docker_step.value.cache_enabled
       push_enabled         = docker_step.value.push_enabled
-      target               = docker_step.value.target_enabled
+      target               = docker_step.value.target
     }
   }
 

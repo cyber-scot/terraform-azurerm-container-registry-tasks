@@ -22,12 +22,13 @@ variable "registry_tasks" {
       context_access_token = string
       context_path         = string
       dockerfile_path      = string
-      arguments            = list(string)
-      secret_arguments     = list(string)
+      arguments            = optional(map(string), {})
+      secret_arguments     = optional(map(string), {})
       image_names          = list(string)
-      cache_enabled        = bool
-      push_enabled         = bool
-      target_enabled       = bool
+      cache_enabled        = optional(bool, true)
+      push_enabled         = optional(bool, true)
+      enabled              = optional(bool, true)
+      target               = optional(string)
     }))
     encoded_step = optional(object({
       task_content         = string
@@ -47,7 +48,7 @@ variable "registry_tasks" {
     }))
     platform = optional(object({
       os           = string
-      architecture = string
+      architecture = optional(string)
       variant      = optional(string)
     }))
     registry_credential = optional(object({
@@ -83,7 +84,7 @@ variable "registry_tasks" {
     }))
     identity_type    = string
     identity_ids     = optional(list(string))
-    schedule_run_now = optional(bool)
+    schedule_run_now = optional(bool, true)
   }))
   default = []
 }
