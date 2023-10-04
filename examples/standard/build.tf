@@ -42,7 +42,7 @@ module "container_registry" {
 }
 
 module "registry_task" {
-  source = "cyber-scot/container_registry_tasks/azurerm"
+  source = "cyber-scot/container-registry-tasks/azurerm"
 
   registry_tasks = [
     {

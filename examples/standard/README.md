@@ -44,7 +44,7 @@ module "container_registry" {
 }
 
 module "registry_task" {
-  source = "cyber-scot/container_registry_tasks/azurerm"
+  source = "cyber-scot/container-registry-tasks/azurerm"
 
   registry_tasks = [
     {
@@ -58,7 +58,7 @@ module "registry_task" {
         context_access_token = data.azurerm_key_vault_secret.gh_pat.value
         context_path         = "https://github.com/cyber-scot/terraform-azurerm-container-registry-tasks.git"
         dockerfile_path      = "examples/standard/Dockerfile"
-        schedule_run_now    = true
+        schedule_run_now     = true
         image_names          = ["${module.container_registry.registry_login_servers[0]}/ubuntu-nginx:latest"]
       }
       identity_type = "SystemAssigned"
@@ -84,7 +84,7 @@ No requirements.
 |------|--------|---------|
 | <a name="module_container_registry"></a> [container\_registry](#module\_container\_registry) | cyber-scot/container-registry/azurerm | n/a |
 | <a name="module_network"></a> [network](#module\_network) | cyber-scot/network/azurerm | n/a |
-| <a name="module_registry_task"></a> [registry\_task](#module\_registry\_task) | cyber-scot/container_registry_tasks/azurerm | n/a |
+| <a name="module_registry_task"></a> [registry\_task](#module\_registry\_task) | cyber-scot/container-registry-tasks/azurerm | n/a |
 | <a name="module_rg"></a> [rg](#module\_rg) | cyber-scot/rg/azurerm | n/a |
 
 ## Resources
