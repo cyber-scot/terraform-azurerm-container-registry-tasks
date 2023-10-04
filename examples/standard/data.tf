@@ -5,7 +5,7 @@ data "azurerm_resource_group" "rg" {
 }
 
 data "azurerm_key_vault" "kv" {
-  name                = "kv-${var.short}-${var.loc}-${var.env}-01"
+  name                = "kv-${var.short}-${var.loc}-${var.env}-mgmt-01"
   resource_group_name = data.azurerm_resource_group.rg.name
 }
 

@@ -155,6 +155,6 @@ resource "azurerm_container_registry_task" "acr_task" {
 }
 
 resource "azurerm_container_registry_task_schedule_run_now" "schedule_run_now" {
-  for_each                   = { for task in var.registry_tasks : task.name => task if each.value.schedule_run_now == true }
+  for_each                   = { for task in var.registry_tasks : task.name => task if task.schedule_run_now == true }
   container_registry_task_id = azurerm_container_registry_task.acr_task[each.key].id
 }

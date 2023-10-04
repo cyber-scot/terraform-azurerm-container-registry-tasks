@@ -41,37 +41,23 @@ module "container_registry" {
   ]
 }
 
-locals {
-  dockerfile_content = <<-EOT
-    FROM ubuntu:latest
-
-    RUN apt-get update && \
-        apt-get install -y nginx
-  EOT
-}
-
-resource "local_file" "dockerfile" {
-  content  = local.dockerfile_content
-  filename = "${path.module}/Dockerfile"
-}
 
 module "acr_task_example" {
   source = "../../"
 
   registry_tasks = [
     {
-      name   = "example_task"
+      name   = "build_ubuntu"
       acr_id = "YOUR_ACR_ID_HERE" # Replace with your Azure Container Registry ID
-      tags = {
-        "Environment" = "Dev"
-      }
+      tags   = module.rg.rg_tags
       docker_step = {
-        context_access_token = data.azurerm_key_vault_secret.gh_pat.value # Replace with your context access token if needed
-        context_path         = "."                                        # Assuming the Dockerfile is in the current directory
-        dockerfile_path      = "Dockerfile"
+        context_access_token = data.azurerm_key_vault_secret.gh_pat.value
+        context_path         = "https://github.com/cyber-scot/terraform-azurerm-container-registry-tasks.git" # Assuming the Dockerfile is in the current directory
+        dockerfile_path      = "examples/standard/Dockerfile"
+        scheduled_run_now    = true
         arguments            = []
         secret_arguments     = []
-        image_names          = ["myregistry.azurecr.io/ubuntu:latest"]
+        image_names          = ["${module.container_registry}/ubuntu:latest"]
         cache_enabled        = true
         push_enabled         = true
         target_enabled       = true
