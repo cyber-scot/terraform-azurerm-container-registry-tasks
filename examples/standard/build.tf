@@ -60,6 +60,6 @@ module "registry_task" {
         image_names          = ["${module.container_registry.registry_login_servers[0]}/ubuntu-nginx:latest"]
       }
       identity_type = "SystemAssigned"
-    }
+    },
   ]
 }
