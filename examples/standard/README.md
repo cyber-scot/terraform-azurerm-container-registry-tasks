@@ -21,7 +21,7 @@ module "network" {
 
   subnets = {
     "sn1-${module.network.vnet_name}" = {
-      prefix            = "10.0.0.0/24",
+      address_prefixes = ["10.0.0.0/24"]
       service_endpoints = ["Microsoft.Storage"]
     }
   }
@@ -62,7 +62,7 @@ module "registry_task" {
         image_names          = ["${module.container_registry.registry_login_servers[0]}/ubuntu-nginx:latest"]
       }
       identity_type = "SystemAssigned"
-    }
+    },
   ]
 }
 ```
