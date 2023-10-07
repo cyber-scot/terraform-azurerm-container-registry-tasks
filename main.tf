@@ -152,7 +152,7 @@ resource "azurerm_container_registry_task" "acr_task" {
       identity_ids = length(try(each.value.identity_ids, [])) > 0 ? each.value.identity_ids : []
     }
   }
-
+}
 
 resource "azurerm_container_registry_task_schedule_run_now" "schedule_run_now" {
   for_each                   = { for task in var.registry_tasks : task.name => task if task.schedule_run_now == true }

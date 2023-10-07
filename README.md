@@ -154,10 +154,47 @@ resource "azurerm_container_registry_task" "acr_task" {
       identity_ids = length(try(each.value.identity_ids, [])) > 0 ? each.value.identity_ids : []
     }
   }
-
+}
 
 resource "azurerm_container_registry_task_schedule_run_now" "schedule_run_now" {
   for_each                   = { for task in var.registry_tasks : task.name => task if task.schedule_run_now == true }
   container_registry_task_id = azurerm_container_registry_task.acr_task[each.key].id
 }
 ```
+## Requirements
+
+No requirements.
+
+## Providers
+
+| Name | Version |
+|------|---------|
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | n/a |
+
+## Modules
+
+No modules.
+
+## Resources
+
+| Name | Type |
+|------|------|
+| [azurerm_container_registry_task.acr_task](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/container_registry_task) | resource |
+| [azurerm_container_registry_task_schedule_run_now.schedule_run_now](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/container_registry_task_schedule_run_now) | resource |
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_registry_tasks"></a> [registry\_tasks](#input\_registry\_tasks) | List of registry tasks. | <pre>list(object({<br>    name            = string<br>    acr_id          = string<br>    agent_pool_name = optional(string)<br>    enabled         = optional(bool)<br>    log_template    = optional(string)<br>    tags            = map(string)<br>    is_system_task  = optional(bool)<br>    agent_setting = optional(object({<br>      cpu = number<br>    }))<br>    base_image_trigger = optional(object({<br>      name                        = string<br>      type                        = string<br>      enabled                     = bool<br>      update_trigger_endpoint     = string<br>      update_trigger_payload_type = string<br>    }))<br>    docker_step = optional(object({<br>      context_access_token = string<br>      context_path         = string<br>      dockerfile_path      = string<br>      arguments            = optional(map(string), {})<br>      secret_arguments     = optional(map(string), {})<br>      image_names          = list(string)<br>      cache_enabled        = optional(bool, true)<br>      push_enabled         = optional(bool, true)<br>      enabled              = optional(bool, true)<br>      target               = optional(string)<br>    }))<br>    encoded_step = optional(object({<br>      task_content         = string<br>      context_access_token = string<br>      context_path         = string<br>      secret_values        = list(string)<br>      value_content        = string<br>      values               = list(string)<br>    }))<br>    file_step = optional(object({<br>      task_file_path       = string<br>      context_access_token = string<br>      context_path         = string<br>      secret_values        = list(string)<br>      value_file_path      = string<br>      values               = list(string)<br>    }))<br>    platform = optional(object({<br>      os           = string<br>      architecture = optional(string)<br>      variant      = optional(string)<br>    }))<br>    registry_credential = optional(object({<br>      source = optional(object({<br>        login_mode = string<br>      }))<br>      custom = optional(object({<br>        login_server = string<br>        identity     = string<br>        username     = string<br>        password     = string<br>      }))<br>    }))<br>    source_trigger = optional(object({<br>      name           = string<br>      events         = list(string)<br>      repository_url = string<br>      source_type    = string<br>      branch         = string<br>      enabled        = bool<br>      authentication = optional(object({<br>        token             = string<br>        token_type        = string<br>        expire_in_seconds = number<br>        refresh_token     = string<br>        scope             = string<br>      }))<br>    }))<br>    timer_trigger = optional(object({<br>      name     = string<br>      schedule = string<br>      enabled  = bool<br>    }))<br>    identity_type    = string<br>    identity_ids     = optional(list(string))<br>    schedule_run_now = optional(bool, true)<br>  }))</pre> | `[]` | no |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| <a name="output_acr_task_enabled_statuses"></a> [acr\_task\_enabled\_statuses](#output\_acr\_task\_enabled\_statuses) | The enabled statuses of the Azure Container Registry tasks. |
+| <a name="output_acr_task_ids"></a> [acr\_task\_ids](#output\_acr\_task\_ids) | The IDs of the Azure Container Registry tasks. |
+| <a name="output_acr_task_names"></a> [acr\_task\_names](#output\_acr\_task\_names) | The names of the Azure Container Registry tasks. |
+| <a name="output_acr_task_principal_ids"></a> [acr\_task\_principal\_ids](#output\_acr\_task\_principal\_ids) | The Principal IDs associated with the Managed Service Identities of the Azure Container Registry tasks. |
+| <a name="output_acr_task_tenant_ids"></a> [acr\_task\_tenant\_ids](#output\_acr\_task\_tenant\_ids) | The Tenant IDs associated with the Managed Service Identities of the Azure Container Registry tasks. |
+| <a name="output_schedule_run_now_ids"></a> [schedule\_run\_now\_ids](#output\_schedule\_run\_now\_ids) | The IDs of the Azure Container Registry task schedule run now. |
